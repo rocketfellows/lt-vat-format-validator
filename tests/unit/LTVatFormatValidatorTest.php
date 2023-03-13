@@ -79,6 +79,22 @@ class LTVatFormatValidatorTest extends TestCase
                 'isValid' => true,
             ],
             [
+                'vatNumber' => '123456789012',
+                'isValid' => true,
+            ],
+            [
+                'vatNumber' => '111111111111',
+                'isValid' => true,
+            ],
+            [
+                'vatNumber' => '000000000000',
+                'isValid' => true,
+            ],
+            [
+                'vatNumber' => '999999999999',
+                'isValid' => true,
+            ],
+            [
                 'vatNumber' => 'LT1234567890',
                 'isValid' => false,
             ],
