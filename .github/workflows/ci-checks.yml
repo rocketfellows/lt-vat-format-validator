@@ -1,0 +1,57 @@
+name: CI-CHECKS
+
+on: [push]
+
+jobs:
+  run-phpcs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: php-actions/composer@v5
+      - name: PHPCS analyze
+        run: ./vendor/bin/phpcs -p -s --standard=phpcs.xml src tests
+  run-php-stan:
+    needs: run-phpcs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: php-actions/composer@v5
+      - name: PHPStan Static Analysis source code
+        uses: php-actions/phpstan@v3
+        with:
+          configuration: ./phpstan.neon.dist
+  run-php-unit-tests:
+    needs: run-php-stan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: php-actions/composer@v5
+      - uses: php-actions/phpunit@v3
+        with:
+          version: 9.5.28
+          bootstrap: vendor/autoload.php
+          configuration: phpunit.xml
+          args: --coverage-text
+  run-assemble-php-unit-coverage:
+    needs: run-php-unit-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: php-actions/composer@v5
+      - name: Run PHPUnit Tests
+        uses: php-actions/phpunit@v3
+        with:
+          version: 9.5.28
+          php_extensions: xdebug
+          bootstrap: vendor/autoload.php
+          configuration: phpunit.xml
+          args: --coverage-text
+        env:
+          XDEBUG_MODE: coverage
+      - name: Generate test coverage badge
+        uses: timkrase/phpunit-coverage-badge@v1.2.0
+        with:
+          report: ./clover.xml
+          coverage_badge_path: 'badge.svg'
+          push_badge: true
+          repo_token: ${{ secrets.GITHUB_TOKEN }}

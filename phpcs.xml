@@ -1,0 +1,26 @@
+<ruleset name="base-coding-style">
+    <description>Base component coding style</description>
+
+    <rule ref="PSR12"/>
+
+    <rule ref="PSR2.Methods.MethodDeclaration.Underscore"/>
+
+    <rule ref="Generic.Formatting.SpaceAfterCast"/>
+
+    <rule ref="Generic.NamingConventions.UpperCaseConstantName"/>
+
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="300"/>
+            <property name="absoluteLineLimit" value="500"/>
+        </properties>
+    </rule>
+
+    <rule ref="Squiz.Scope.MethodScope"/>
+
+    <rule ref="Squiz.Classes.ValidClassName"/>
+
+    <rule ref="PEAR.Functions.ValidDefaultValue"/>
+
+    <rule ref="Zend.Files.ClosingTag"/>
+</ruleset>
